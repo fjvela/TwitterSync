@@ -31,4 +31,21 @@ jobs:
       - name: Application Version
         id: version
         uses: paulhatch/semantic-version@v4.0.2
+      
+      - name: Set project versions
+        id: update
+        uses: vers-one/dotnet-project-version-updater@v1.2
+        with:
+          file: |
+            "**/*.csproj"
+          version: ${{ steps.version.outputs.version }}
+
+      - name: Commit version changes
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+
+          git add .
+          git commit -m "[skip ci] Update project versions to ${{ steps.update.outputs.newVersion }}"
+          git push
 
