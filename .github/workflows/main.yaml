@@ -39,3 +39,8 @@ jobs:
           version_mask: 0.1.0.0
           version_overwrite: "*.*.*.*"
           github_token: ${{ secrets.PAT }}
+
+      - name: Package and push NuGet
+        run: |
+          dotnet pack --configuration Release
+          dotnet nuget push **\*.nupkg --source 'https://nuget.pkg.github.com/fjvela/index.json' --api-key ${{secrets.NUGET_API_KEY}}
