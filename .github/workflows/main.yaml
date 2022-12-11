@@ -43,4 +43,5 @@ jobs:
       - name: Package and push NuGet
         run: |
           dotnet pack --configuration Release
+          ls -laR src/
           dotnet nuget push **\*.nupkg --source 'https://nuget.pkg.github.com/fjvela/index.json' --api-key ${{secrets.NUGET_API_KEY}}
