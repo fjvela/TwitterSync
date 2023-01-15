@@ -19,6 +19,14 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
 
+      - name: Bump versions
+        uses: SiqiLu/dotnet-bump-version@master
+        with:
+          version_files: "**/*.csproj"
+          version_mask: 0.1.0.0
+          version_overwrite: "*.*.*.*"
+          github_token: ${{ secrets.PAT }}
+
       - name: Install dependencies
         run: dotnet restore
 
@@ -27,18 +35,6 @@ jobs:
 
       - name: Test
         run: dotnet test --no-restore --verbosity normal
-
-      - name: Application Version
-        id: version
-        uses: paulhatch/semantic-version@v4.0.2
-
-      - name: Bump versions
-        uses: SiqiLu/dotnet-bump-version@master
-        with:
-          version_files: "**/*.csproj"
-          version_mask: 0.1.0.0
-          version_overwrite: "*.*.*.*"
-          github_token: ${{ secrets.PAT }}
 
       - name: Package and push NuGet
         run: |
